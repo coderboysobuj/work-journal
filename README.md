@@ -1,16 +1,19 @@
-# Welcome to Remix!
+## Work Journal application
 
-- [Remix Docs](https://remix.run/docs)
+### Track you every day activies with work journal application
 
-## Development
+## Get started
 
 From your terminal:
 
 ```sh
-npm run dev
+git clone https://github.com/coderboysobuj/work-journal.git
+cd work-journal
+pnpm install
+cp .env.example .env
+npx prisma migrate dev
+pnpm run dev
 ```
-
-This starts your app in development mode, rebuilding assets on file changes.
 
 ## Deployment
 
@@ -27,12 +30,3 @@ npm start
 ```
 
 Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
