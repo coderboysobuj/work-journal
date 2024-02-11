@@ -1,34 +1,28 @@
-import { Form, useNavigation } from "@remix-run/react";
+import { Form, useFetcher } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 
 export default function EntryForm() {
-  let dateRef = useRef<HTMLInputElement | null>(null);
-  let typeRef = useRef<HTMLInputElement | null>(null);
-  let textRef = useRef<HTMLTextAreaElement | null>(null);
+  let fetcher = useFetcher();
+  let texteaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const nagivation = useNavigation();
+  let hasSubmitted = fetcher.data !== undefined && fetcher.state === "idle";
 
+  // clear textear after form submited
   useEffect(() => {
-    if (nagivation.location) {
-      if (dateRef?.current) {
-        dateRef.current.value = "";
-      }
-
-      if (typeRef?.current) {
-        typeRef.current.value = "";
-      }
-      if (textRef?.current) {
-        textRef.current.value = "";
-      }
+    if (texteaRef.current && hasSubmitted) {
+      texteaRef.current.value = "";
+      texteaRef.current.focus();
     }
-  }, [nagivation.location]);
+  }, [hasSubmitted]);
 
   return (
-    <Form className="mt-4" method="post" action="/create">
-      <fieldset>
+    <fetcher.Form className="mt-4" method="post">
+      <fieldset
+        disabled={fetcher.state !== "idle"}
+        className="disabled:opacity-70"
+      >
         <div>
           <input
-            ref={dateRef}
             type="date"
             name="date"
             required
@@ -45,7 +39,6 @@ export default function EntryForm() {
           ].map((option) => (
             <label key={option.value} className="inline-block text-white">
               <input
-                ref={typeRef}
                 required
                 type="radio"
                 className="mr-2 border-zinc-700 bg-zinc-800 focus:ring-sky-600"
@@ -61,7 +54,7 @@ export default function EntryForm() {
           <textarea
             placeholder="Type your entry..."
             name="text"
-            ref={textRef}
+            ref={texteaRef}
             required
             rows={3}
             className="w-full px-3 py-2 rounded-md border-zinc-700 bg-zinc-800 text-white focus:border-sky-600"
@@ -73,10 +66,10 @@ export default function EntryForm() {
             type="submit"
             className="px-3 py-2 rounded-md bg-sky-600 text-white w-full"
           >
-            Save
+            {fetcher.state !== "idle" ? "Saving..." : "Save"}
           </button>
         </div>
       </fieldset>
-    </Form>
+    </fetcher.Form>
   );
 }

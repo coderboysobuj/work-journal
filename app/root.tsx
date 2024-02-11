@@ -29,7 +29,7 @@ export default function App() {
         <div className="bg-zinc-900 text-white">
           <section className="max-w-xl mx-auto px-4 flex items-center justify-center w-full py-8 2xl:py-12">
             <figure className="">
-              <h1 className="text-4xl font-semibold">Work Journey</h1>
+              <h1 className="text-4xl font-semibold">Work Journal</h1>
               <p className="text-zinc-500 text-sm lg:text-base">
                 Tracking you work every week
               </p>

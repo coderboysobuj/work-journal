@@ -1,8 +1,9 @@
-import { type MetaFunction } from "@remix-run/node";
+import { ActionFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { format, parseISO, startOfWeek } from "date-fns";
 import EntryForm from "~/components/entry-form";
 import prisma from "~/db";
+import { validate } from "~/utils/validate";
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,6 +27,19 @@ export async function loader() {
       date: entry.date.toISOString().substring(0, 10),
     })),
   };
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  let formData = await request.formData();
+  let { text, type, date } = validate(Object.fromEntries(formData));
+
+  return prisma.entry.create({
+    data: {
+      date: new Date(date),
+      text,
+      type,
+    },
+  });
 }
 
 export default function Index() {
